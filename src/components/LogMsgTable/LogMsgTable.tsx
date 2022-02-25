@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {LogMsgProps} from "types/index";
+import {ITransformedLog, LogMsgProps} from "types/index";
 
 const titles: string[] = [
     'Object id',
@@ -7,7 +7,11 @@ const titles: string[] = [
     'Is transformed'
 ]
 
-export const LogMsgTable: FC<LogMsgProps> = ({logs}) => {
+export const LogMsgTable = ({logs, currentPage} : {
+    logs: ITransformedLog[][], currentPage: number}) => {
+
+    let part: ITransformedLog[] = logs[currentPage]
+
     return (
         <div>
             <table className="table table-primary table-hover">
@@ -19,7 +23,7 @@ export const LogMsgTable: FC<LogMsgProps> = ({logs}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {logs.map((item) => (
+                {part.map((item) => (
                     <tr>
                         <td>{item.objId}</td>
                         <td>{item.content}</td>

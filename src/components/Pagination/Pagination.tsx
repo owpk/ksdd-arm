@@ -1,12 +1,10 @@
-const Pagination = ({currentPage, pages, setPage, callback}: {
-    currentPage: number
-    pages: string[]
+const Pagination = ({length, setPage}: {
+    length : number
     setPage: (page: number) => void
-    callback: (query: string) => void
 }) => {
 
     const paginationArray: number[] =
-        Array.from({length: pages.length}, (_, i) => i + 1)
+        Array.from({length: length}, (_, i) => i)
 
     return (
         <>
@@ -14,8 +12,8 @@ const Pagination = ({currentPage, pages, setPage, callback}: {
                 <ul className="pagination">
                     {paginationArray.map((item) => (
                         <li className="page-item">
-                            <a onClick={() => callback.call(this, pages[item])}
-                               className="page-link">{item}</a>
+                            <a onClick={() => setPage(item)}
+                               className="page-link">{item + 1}</a>
                         </li>
                     ))}
                 </ul>

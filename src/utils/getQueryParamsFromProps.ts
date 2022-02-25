@@ -1,11 +1,11 @@
-import {PageableQuery} from 'types/index'
+import {OffsetPageableQuery} from 'types/index'
 
-export function getQueryParamsFromProps(query: PageableQuery): string {
+export function getQueryParamsFromProps(query: OffsetPageableQuery): string {
 
     let parts: string[] = []
 
     if (query) {
-        parts = [`limit=${query.to - query.from}`, `offset=${query.from}`]
+        parts = [`from=${query.from}`, `to=${query.to}`]
         if (query.filter) {
             query.filter
                 .map(x => `${x.key}=${x.value}`)

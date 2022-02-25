@@ -1,7 +1,7 @@
-export interface ITransformedLogs {
-  objId: string
-  content: string
-  transformed: boolean
+export interface ITransformedLog {
+    objId: string
+    content: string
+    transformed: boolean
 }
 
 export interface Pageable<T> {
@@ -11,16 +11,16 @@ export interface Pageable<T> {
 }
 
 export interface LogMsgProps {
-  readonly logs: ITransformedLogs[]
-  readonly total?: number
+    readonly logs: ITransformedLog[]
+    readonly total?: number
 }
 
-export const MockData: ITransformedLogs[] = [
-    { objId: '1', content: "ads", transformed: true },
-    { objId: '1', content: "ads", transformed: true },
-    { objId: '1', content: "ads", transformed: true },
-    { objId: '1', content: "ads", transformed: true },
-    { objId: '1', content: "ads", transformed: true }
+export const MockData: ITransformedLog[] = [
+    {objId: '1', content: "ads", transformed: true},
+    {objId: '1', content: "ads", transformed: true},
+    {objId: '1', content: "ads", transformed: true},
+    {objId: '1', content: "ads", transformed: true},
+    {objId: '1', content: "ads", transformed: true}
 ]
 
 export interface PaginationProps {
@@ -29,9 +29,12 @@ export interface PaginationProps {
     totalDataLength: number
 }
 
-export interface PageableQuery {
+export interface OffsetPageable {
     from: number
     to: number
-    filter?: {key: string, value: string}[]
+}
+
+export interface OffsetPageableQuery extends OffsetPageable {
+    filter?: { key: string, value: string }[]
 }
 

@@ -1,11 +1,11 @@
-import {PageableQuery, PaginationProps} from "../types";
+import {OffsetPageableQuery, PaginationProps} from "../types";
 import {calculateQueryParts, getQueryParamsFromProps} from "utils/index";
 
 
 test('', () => {
 
     const msgProps: PaginationProps = {apiPageSize: 10, tablePageSize: 5, totalDataLength: 20};
-    const q: PageableQuery = {from: 0, to: 50, filter: []}
+    const q: OffsetPageableQuery = {from: 0, to: 50, filter: []}
 
     let g = getQueryParamsFromProps(q)
     console.log('QUERY: ' + g)
