@@ -5,7 +5,9 @@ import {ITransformedLog, PaginationProps, Pageable} from "types/index";
 class LogMsgDao {
 
     fetchLogs(queryParams: string): Promise<AxiosResponse<Pageable<ITransformedLog>>> {
-        return restClient.get('http://localhost:8080/api/logs' + queryParams);
+        let url = 'http://localhost:8080/api/logs' + queryParams
+        console.log("LOG REQUEST WITH URL: " + url)
+        return restClient.get(url);
     }
 
 }

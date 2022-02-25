@@ -18,18 +18,17 @@ function App() {
 
     const pages: string[] = calculateQueryParts(msgProps)
 
-    const [a_logs, setApiLogs] = useState<ITransformedLog[][]>([])
+    const [a_logs, setApiLogs] = useState<ITransformedLog[]>([])
     const [currentPage, setPage] = useState(0)
 
     console.log('CURR PAGE:: ' + currentPage)
 
     console.log('PAGES:: ' + pages[currentPage])
 
-    let apiLogs: ITransformedLog[][]
-
     let callback = (query: string): void => {
         logMsgDao.fetchLogs(query)
             .then(d => {
+                console.log("API RESPONSE: " + d)
                 let logs: ITransformedLog[] = d.data.content
                 const tableParts: OffsetPageable[] = calculateParts(
                     Math.ceil(msgProps.apiPageSize / msgProps.tablePageSize), msgProps.tablePageSize);
@@ -40,7 +39,7 @@ function App() {
                     (x.to > logs.length) ? logs.length : x.to))
 
                 console.log("LOGS: " + pages.map(x => `data length: ${x.length}`).join(" : "))
-                setApiLogs(pages);
+                setApiLogs(pages[currentPage]);
             })
             .catch(e => console.log("API ERROR" + e))
     }
@@ -48,12 +47,12 @@ function App() {
     useEffect(() => {
         callback(pages[currentPage])
         console.log("API LOGS:: " + a_logs.length + " : " + currentPage)
-    }, [])
+    },[])
 
     return (
         <main className="container">
             <div className="bg-light p-5 rounded">
-                <LogMsgTable currentPage={currentPage} logs={a_logs}/>
+                <LogMsgTable logs={a_logs}/>
 
                 <Pagination length={2} setPage={setPage}
                 />

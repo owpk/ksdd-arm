@@ -7,10 +7,9 @@ const titles: string[] = [
     'Is transformed'
 ]
 
-export const LogMsgTable = ({logs, currentPage} : {
-    logs: ITransformedLog[][], currentPage: number}) => {
+export const LogMsgTable:FC<LogMsgProps> = ({logs}) => {
 
-    let part: ITransformedLog[] = logs[currentPage]
+    console.log("CURRENT LOG TABLE PART: " + logs)
 
     return (
         <div>
@@ -23,7 +22,7 @@ export const LogMsgTable = ({logs, currentPage} : {
                 </tr>
                 </thead>
                 <tbody>
-                {part.map((item) => (
+                {logs.map((item) => (
                     <tr>
                         <td>{item.objId}</td>
                         <td>{item.content}</td>
