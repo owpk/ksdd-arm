@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {ITransformedLog, LogMsgProps} from "types/index";
+import {LogMsgProps} from "types/index";
 
 const titles: string[] = [
     'Object id',

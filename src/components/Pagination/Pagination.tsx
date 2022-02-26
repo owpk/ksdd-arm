@@ -1,10 +1,11 @@
-const Pagination = ({length, setPage}: {
-    length : number
-    setPage: (page: number) => void
+const Pagination = ({totalPages, localPages, setLocalPage}: {
+    totalPages: number
+    localPages: number
+    setLocalPage: (page: number) => void
 }) => {
 
     const paginationArray: number[] =
-        Array.from({length: length}, (_, i) => i)
+        Array.from({length: localPages}, (_, i) => i)
 
     return (
         <>
@@ -12,7 +13,7 @@ const Pagination = ({length, setPage}: {
                 <ul className="pagination">
                     {paginationArray.map((item) => (
                         <li className="page-item">
-                            <a onClick={() => setPage(item)}
+                            <a onClick={() => setLocalPage(item)}
                                className="page-link">{item + 1}</a>
                         </li>
                     ))}

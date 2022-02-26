@@ -13,7 +13,7 @@ export function calculateQueryParts(props: PaginationProps, params?: { key: stri
 
 export function calculateParts(totalPages: number, pageSize: number): OffsetPageable[] {
     return Array.from({length: totalPages}, (_, i) => {
-        let lastFrom = (i === 0) ? 0 : i * pageSize + 1;
+        let lastFrom = (i === 0) ? 0 : i * pageSize;
         let lastTo = lastFrom + pageSize;
         return {from: lastFrom, to: lastTo} as OffsetPageable
     });

@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {ITransformedLog, Pageable, OffsetPageableQuery, OffsetPageable} from "types/index";
-import {LogMsgTable} from "components/LogMsgTable/index";
-import {LogMsgDao} from "services/LogMsg/index";
-import type {PaginationProps} from "services/LogMsg/index";
-import Pagination from "components/Pagination/index";
-import {calculateParts, calculateQueryParts} from "../utils";
+import React, {useEffect, useState} from 'react';
+import {ITransformedLog, PaginationProps, OffsetPageable} from "types/index";
+import {LogMsgDao} from "services/dao/LogMsg/index";
+import {calculateParts, calculateQueryParts} from "utils/index";
 
-let logMsgDao: LogMsgDao = new LogMsgDao();
+import {LogMsgTable} from "components/LogMsgTable/index";
+import Pagination from "components/Pagination/index";
+import {AbsRestDao} from "../services/dao/AbsRestDao";
+
 
 const msgProps: PaginationProps = {
     apiPageSize: 10,
@@ -14,24 +14,27 @@ const msgProps: PaginationProps = {
     totalDataLength: 10
 }
 
-function App() {
+function App(logD) {
+
+    let logMsgDao: AbsRestDao<ITransformedLog> = new LogMsgDao();
 
     const pages: string[] = calculateQueryParts(msgProps)
 
-    const [a_logs, setApiLogs] = useState<ITransformedLog[]>([])
-    const [currentPage, setPage] = useState(0)
+    let localPages = Math.ceil(msgProps.apiPageSize / msgProps.tablePageSize)
+
+    const [a_logs, setApiLogs] = useState<ITransformedLog[][]>([[]])
+    const [currentPage, setLocalPage] = useState(0)
+    const [totalPages, setTotalPages] = useState(msgProps.totalDataLength)
 
     console.log('CURR PAGE:: ' + currentPage)
-
-    console.log('PAGES:: ' + pages[currentPage])
 
     let callback = (query: string): void => {
         logMsgDao.fetchLogs(query)
             .then(d => {
                 console.log("API RESPONSE: " + d)
+
                 let logs: ITransformedLog[] = d.data.content
-                const tableParts: OffsetPageable[] = calculateParts(
-                    Math.ceil(msgProps.apiPageSize / msgProps.tablePageSize), msgProps.tablePageSize);
+                const tableParts: OffsetPageable[] = calculateParts(localPages, msgProps.tablePageSize);
 
                 console.log("PARTS: " + tableParts.map(x => `${x.from} - ${x.to}`).join(" : "))
 
@@ -39,7 +42,7 @@ function App() {
                     (x.to > logs.length) ? logs.length : x.to))
 
                 console.log("LOGS: " + pages.map(x => `data length: ${x.length}`).join(" : "))
-                setApiLogs(pages[currentPage]);
+                setApiLogs(pages);
             })
             .catch(e => console.log("API ERROR" + e))
     }
@@ -52,9 +55,8 @@ function App() {
     return (
         <main className="container">
             <div className="bg-light p-5 rounded">
-                <LogMsgTable logs={a_logs}/>
-
-                <Pagination length={2} setPage={setPage}
+                <LogMsgTable logs={a_logs[currentPage]}/>
+                <Pagination totalPages={totalPages} localPages={localPages} setLocalPage={setLocalPage}
                 />
             </div>
         </main>
