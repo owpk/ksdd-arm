@@ -1,1 +1,0 @@
-export { LogMsgTable } from './LogMsgTable'

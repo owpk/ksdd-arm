@@ -1,6 +1,4 @@
-import {OffsetPageableQuery, PaginationProps} from "../types";
-import {calculateQueryParts, getQueryParamsFromProps} from "utils/index";
-
+import {getQueryParamsFromProps, OffsetPageableQuery, PaginationProps} from "../components/OffsetTable";
 
 test('', () => {
 
@@ -9,9 +7,6 @@ test('', () => {
 
     let g = getQueryParamsFromProps(q)
     console.log('QUERY: ' + g)
-
-    let s: string[] = calculateQueryParts(msgProps)
-    console.log('PARTS: ' + s[0])
 
     let p: string[] = Array.from({length: 5}, (_, i) => {
         let counter = i * msgProps.tablePageSize;

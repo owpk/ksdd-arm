@@ -1,4 +1,4 @@
-import {OffsetPageableQuery} from 'types/index'
+import {OffsetPageableQuery} from "../index";
 
 export function getQueryParamsFromProps(query: OffsetPageableQuery): string {
 

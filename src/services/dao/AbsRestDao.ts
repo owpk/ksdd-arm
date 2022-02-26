@@ -1,7 +1,8 @@
-import {calculateParts, calculateQueryParts, getQueryParamsFromProps, restClient} from "utils/index";
+import {getQueryParamsFromProps} from "../../components/OffsetTable/index";
+import {Pageable, OffsetPageableQuery} from "../../components/OffsetTable/index";
 import {AxiosResponse} from "axios";
-import {PaginationProps, Pageable, OffsetPageable, OffsetPageableQuery} from "types";
 import {RestDao} from "./DaoTypes.types";
+import {restClient} from "../../utils/RestClient";
 
 abstract class AbsRestDao<T> implements RestDao<T>{
 
