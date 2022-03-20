@@ -29,28 +29,28 @@ const msgProps3: PaginationProps = {
 function App() {
     return (
         <>
-            <main className="container">
-                <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-                    <a className="navbar-brand" href="#!/main">KSDD ARM</a>
-                    <div className="collapse navbar-collapse" id="navbarCollapse">
-                        <ul className="navbar-nav mr-auto sidenav" id="navAccordion">
-                            <li ng-if="isUserLoggedIn() && !isAdmin()" className="nav-item">
-                                <a className="nav-link" href="#!/errands_create">main</a>
-                            </li>
-                            <li ng-if="isMaster() || isAdmin()" className="nav-item">
-                                <a className="nav-link" href="#!/errands_pending">journal</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+            <div>
                 <div className="container">
-                    <div className="row">
-                        <div className="col-sm">
-                            ws-client
-                            <WSClient/>
+                    <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+                        <a className="navbar-brand" href="#!/main">KSDD ARM</a>
+                        <div className="collapse navbar-collapse" id="navbarCollapse">
+                            <ul className="navbar-nav mr-auto sidenav" id="navAccordion">
+                                <li ng-if="isUserLoggedIn() && !isAdmin()" className="nav-item">
+                                    <a className="nav-link" href="#!/errands_create">main</a>
+                                </li>
+                                <li ng-if="isMaster() || isAdmin()" className="nav-item">
+                                    <a className="nav-link" href="#!/errands_pending">journal</a>
+                                </li>
+                            </ul>
                         </div>
+                    </nav>
+                    <br/>
+                    <br/>
+                    <div className="row">
+                        {/*<div className="col-sm">*/}
+                        {/*    <WSClient/>*/}
+                        {/*</div>*/}
                         <div className="col-sm">
-                            db-client
                             <OffsetTable dao={dao}
                                          paginationProps={msgProps3}
                                          tableProps={tableProps}/>
@@ -58,7 +58,7 @@ function App() {
                     </div>
                 </div>
                 <div/>
-            </main>
+            </div>
         </>
     )
 }
