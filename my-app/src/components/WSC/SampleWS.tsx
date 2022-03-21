@@ -12,7 +12,7 @@ export default class WSClient extends React.Component<any, any> {
         this.state = {w_data: []}
     }
 
-    connect():void {
+    connect(): void {
         stompClient.connect({}, () => {
             stompClient.send('/app/init', {}, '/')
             stompClient.subscribe('/topic/publicChatRoom', (data) => {
@@ -23,25 +23,33 @@ export default class WSClient extends React.Component<any, any> {
         });
     }
 
+    send(): void {
+        stompClient.send('/app/send')
+    }
+
     componentDidMount() {
         this.connect();
     }
 
     render() {
         return (
-            <div id="chat-container">
-                <div className="chat-header">
-                    <h3>mq messages</h3>
+            <>
+                <div id="chat-container">
+
+                    <div className="chat-header">
+                        <h3>mq messages</h3>
+                    </div>
+
+                    <hr/>
+
+                    <ul id="messagearea">
+                        {this.state.w_data.map(x =>
+                            <li>{x}</li>
+                        )}
+                    </ul>
                 </div>
-
-                <hr/>
-
-                <ul id="messagearea">
-                    {this.state.w_data.map(x =>
-                        <li>{x}</li>
-                    )}
-                </ul>
-            </div>
+                <div className={"btn btn-primary"} onClick={() => this.send()}>send</div>
+            </>
         )
     }
 }

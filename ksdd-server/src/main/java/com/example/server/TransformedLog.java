@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "logs")
+@ToString
 public class TransformedLog {
 
     @Id
