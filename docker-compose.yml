@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  view:
+    build:
+      context: .
+      dockerfile: ./ksdd-view/Dockerfile
+    ports:
+      - "3000:3000"
+
+  server:
+    build:
+      context: .
+      dockerfile: ./ksdd-server/Dockerfile
+    ports:
+      - "8080:8080"
