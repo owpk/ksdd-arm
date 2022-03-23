@@ -15,6 +15,18 @@
     margin-right:5px;
 }
 
+.table-container {
+    overflow: auto;
+    max-height: 160px;
+    border: 1px solid red;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
 #chat-container {
     position: relative;
     height: 100%;

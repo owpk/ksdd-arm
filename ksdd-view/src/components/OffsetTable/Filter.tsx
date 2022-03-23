@@ -48,8 +48,6 @@ export const Filter = ({ setFilter }: {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
-
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text" id="basic-addon1">@</span>

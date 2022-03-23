@@ -1,7 +1,6 @@
-import {calculateParts} from "./utils/calculateParts";
-import {OffsetPageable} from "./api/Table.types";
-
-const showPages = 10
+import { calculateParts } from "./utils/calculateParts";
+import { OffsetPageable } from "./api/Table.types";
+import { useState } from "react";
 
 const calculateApiPage = (localPage: number, map: { key: number, value: OffsetPageable }[]): number => {
     let val = map.find(x => localPage >= x.value.from
@@ -9,79 +8,104 @@ const calculateApiPage = (localPage: number, map: { key: number, value: OffsetPa
     return val ? val.key : 0;
 }
 
-let from:number = 0
+let from: number = 0
 let to: number
 
-const Pagination = ({totalPages, localPages, setLocalPage, setApiPage}: {
+const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
     totalPages: number
     localPages: number
     setLocalPage: (page: number) => void
     setApiPage: (page: number) => void
 }) => {
 
-    let paginationArray: number[] =
-        Array.from({length: showPages},
-            (_, i) => i)
+    const [currentItemPage, setCurrentItemPage] = useState(0);
 
     let requestPerPageArray: OffsetPageable[] = calculateParts(totalPages, localPages)
 
     let requestPerPageMap: { key: number, value: OffsetPageable }[] =
-        Array.from({length: Math.ceil(totalPages / localPages)},
+        Array.from({ length: Math.ceil(totalPages / localPages) },
             (_, i) => {
-                return {key: i, value: requestPerPageArray[i]}
+                return { key: i, value: requestPerPageArray[i] }
             })
+
+    const switchPage = (item: number) => {
+
+        let apiPg = calculateApiPage(item, requestPerPageMap)
+        console.log('-----------------')
+        console.log('PAGE:: ' + item)
+        console.log(`from - to :: ${from} - ${to}`)
+        console.log(`API PAGE:: ${apiPg}`)
+
+        if (item >= to) {
+            console.log('move to next api page')
+            setApiPage(apiPg)
+        }
+
+        if (item < from) {
+            console.log('move to previous api page')
+            setApiPage(apiPg)
+        }
+
+        from = requestPerPageMap[apiPg].value.from
+        to = requestPerPageMap[apiPg].value.to
+
+        let page = item % localPages
+        setLocalPage(page)
+        console.log('-----------------')
+    }
+
+    function onItemPageChaneAccepted(e): void {
+        if (e.key === 'Enter') {
+            switchPage(e.target.value)
+            console.log("PAGINATION PAGE:: " + e.target.value)
+        }
+    }
+
+    function onItemPageChange(e): void {
+        setCurrentItemPage(e.target.value)
+        console.log("PAGINATION PAGE:: " + currentItemPage)
+    }
 
     if (!to)
         to = requestPerPageMap[0].value.to
 
+    function onClickChangePage(sign: boolean): void {
+        if (!sign) {
+            if (currentItemPage > 0)
+                setCurrentItemPage(currentItemPage - 1)
+        } else {
+            if (currentItemPage < totalPages)
+                setCurrentItemPage(currentItemPage + 1)
+        }
+        console.log("PAGINATION PAGE:: " + currentItemPage)
+        switchPage(currentItemPage)
+    }
+
     return (
         <>
-            <nav aria-label="Page navigation">
-                <ul className="pagination">
-                    {paginationArray.map((item) => (
-                        <li key={item} className="page-item">
-                            <a onClick={
-                                () => {
-                                    let apiPg = calculateApiPage(item, requestPerPageMap)
-                                    console.log('-----------------')
-                                    console.log('PAGE:: ' + item)
-                                    console.log(`from - to :: ${from} - ${to}`)
-                                    console.log(`API PAGE:: ${apiPg}`)
+            <div>
+                <div className="input-group mb-3">
+                    <button onClick={() => onClickChangePage(false)}
+                        className="btn btn-outline-secondary btn-sm" type="button">
+                        prev
+                    </button>
+                    <input type="text"
+                        value={currentItemPage}
+                        onChange={onItemPageChange}
+                        onKeyDown={onItemPageChaneAccepted}
+                        className="form-control" placeholder=""
+                        aria-label="page" aria-describedby="page"
+                    />
+                    <button onClick={() => onClickChangePage(true)}
+                        className="btn btn-outline-secondary btn-sm"
+                        type="button">
+                        next
+                    </button>
+                </div>
 
-                                    if (item >= to) {
-                                        console.log('move to next api page')
-                                        setApiPage(apiPg)
-                                    }
-
-                                    if (item < from) {
-                                        console.log('move to previous api page')
-                                        setApiPage(apiPg)
-                                    }
-
-                                    from = requestPerPageMap[apiPg].value.from
-                                    to = requestPerPageMap[apiPg].value.to
-
-                                    let page = item % localPages
-                                    setLocalPage(page)
-                                    console.log('-----------------')
-                                }
-                            }
-                               className="page-link">{item + 1}</a>
-                        </li>
-                    ))}
-
-                    <li>&nbsp;&nbsp;&nbsp;.&nbsp;.&nbsp;.&nbsp;&nbsp;&nbsp;</li>
-
-                    <li key={totalPages} className="page-item">
-                        <a onClick={
-                            () => setLocalPage(10)
-                        }
-                           className="page-link">{totalPages}</a>
-                    </li>
-                </ul>
-            </nav>
+            </div>
         </>
-    );
-};
+    )
+}
 
 export default Pagination;
