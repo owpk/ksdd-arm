@@ -18,7 +18,7 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
     setApiPage: (page: number) => void
 }) => {
 
-    const [currentItemPage, setCurrentItemPage] = useState(0);
+    const [currentItemPage, setCurrentItemPage] = useState<number>(0);
 
     let requestPerPageArray: OffsetPageable[] = calculateParts(totalPages, localPages)
 
@@ -56,14 +56,14 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
 
     function onItemPageChaneAccepted(e): void {
         if (e.key === 'Enter') {
-            switchPage(e.target.value)
+            switchPage(Number(e.target.value))
             console.log("PAGINATION PAGE:: " + e.target.value)
         }
     }
 
     function onItemPageChange(e): void {
-        setCurrentItemPage(e.target.value)
-        console.log("PAGINATION PAGE:: " + currentItemPage)
+        setCurrentItemPage(Number(e.target.value))
+        console.log("PAGINATION PAGE:: " + Number(e.target.value))
     }
 
     if (!to)
@@ -74,7 +74,7 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
             if (currentItemPage > 0)
                 setCurrentItemPage(currentItemPage - 1)
         } else {
-            if (currentItemPage < totalPages)
+            if (currentItemPage < totalPages) 
                 setCurrentItemPage(currentItemPage + 1)
         }
         console.log("PAGINATION PAGE:: " + currentItemPage)
@@ -89,7 +89,7 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
                         className="btn btn-outline-secondary btn-sm" type="button">
                         prev
                     </button>
-                    <input type="text"
+                    <input type="number"
                         value={currentItemPage}
                         onChange={onItemPageChange}
                         onKeyDown={onItemPageChaneAccepted}
@@ -97,12 +97,11 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
                         aria-label="page" aria-describedby="page"
                     />
                     <button onClick={() => onClickChangePage(true)}
-                        className="btn btn-outline-secondary btn-sm"
+                        className="btn btn-sm"
                         type="button">
                         next
                     </button>
                 </div>
-
             </div>
         </>
     )
