@@ -41,15 +41,15 @@ public class MqUtils {
 
         queueSession = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        var consumer = queueSession.createReceiver(queue, "color='black' OR color='pink'");
+        MessageConsumer consumer = queueSession.createReceiver(queue, "color='black' OR color='pink'");
         messageProducer = queueSession.createProducer(queue);
         consumer.setMessageListener(listener);
 
         new Thread(() -> {
 
             try {
-                var session = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-                var producer = session.createProducer(queue);
+                Session session = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+                MessageProducer producer = session.createProducer(queue);
                 Message msg1 = session.createTextMessage("black");
                 msg1.setStringProperty("color", "black");
                 msg1.setStringProperty("color", "pink");

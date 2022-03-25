@@ -26,7 +26,7 @@ public class SpecResolver {
 
     private void appendIfContains(String key, Specification<TransformedLog> specification) {
         if (specs.containsKey(key)) {
-            if (specs.get(key) != null && !specs.get(key).isBlank())
+            if (specs.get(key) != null && !specs.get(key).isEmpty())
                 defaultSpec = defaultSpec.and(specification);
             else log.warn("empty specification with key: {}", key);
         }
