@@ -19,7 +19,7 @@ export interface TProps {
     tableProps: TableProps<any>
 }
 
-let totalDataLength = 100
+let totalDataLength = 1
 
 export const OffsetTable: FunctionComponent<TProps> = (tProps: TProps) => {
 

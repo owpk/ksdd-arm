@@ -26,8 +26,8 @@ public class DemoApplication implements WebMvcConfigurer {
 
 	@GetMapping("/logs")
 	public Page<TransformedLog> fetchBySpecification(@RequestParam(defaultValue = "0") Integer from,
-													 @RequestParam(defaultValue = "30") Integer to,
-													 @RequestParam Map<String, String> filter) {
+			@RequestParam(defaultValue = "30") Integer to,
+			@RequestParam Map<String, String> filter) {
 		System.out.println(filter);
 		int limit = to - from;
 		var offsetBasedPageRequest = new OffsetBasedPageRequest(limit, from, "objId");

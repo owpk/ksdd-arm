@@ -1,3 +1,4 @@
+import Input from 'components/Input';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -26,17 +27,13 @@ export const Filter = ({ setFilter }: {
     setFilter(flt)
   }
 
+  function fillFlt(searchDefinition: string, value: string) {
+    flt.push({ key: searchDefinition, value: value })
+  }
+
   function clear() {
     flt = []
   }
-
-  const { register, handleSubmit } = useForm<IInput>();
-
-  const onSubmit:SubmitHandler<IInput> = (data) => {
-    flt = [{key: "obj_id", value: data.field}]
-    setFilter(flt)
-  }
-
 
   return (
     <>
@@ -47,17 +44,11 @@ export const Filter = ({ setFilter }: {
       }}>clear
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="basic-addon1">@</span>
-          </div>
-          <input {...register("field")} />
-        </div>
-
-        <input type="submit" />
+      <form >
+        <Input inputLabel={'Obj'} requestName={'Obj_id'} fillSearchQuery={function ({ key, value }: { key: any; value: any; }): void {
+          throw new Error('Function not implemented.');
+        } } />
       </form>
-
     </>
   )
 }

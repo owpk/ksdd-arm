@@ -18,7 +18,7 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
     setApiPage: (page: number) => void
 }) => {
 
-    const [currentItemPage, setCurrentItemPage] = useState<number>(0);
+    const [currentItemPage, setCurrentItemPage] = useState(0);
 
     let requestPerPageArray: OffsetPageable[] = calculateParts(totalPages, localPages)
 
@@ -63,43 +63,52 @@ const Pagination = ({ totalPages, localPages, setLocalPage, setApiPage }: {
 
     function onItemPageChange(e): void {
         setCurrentItemPage(Number(e.target.value))
-        console.log("PAGINATION PAGE:: " + Number(e.target.value))
+        console.log("PAGINATION PAGE:: " + currentItemPage)
     }
 
     if (!to)
         to = requestPerPageMap[0].value.to
 
-    function onClickChangePage(sign: boolean): void {
-        if (!sign) {
-            if (currentItemPage > 0)
-                setCurrentItemPage(currentItemPage - 1)
-        } else {
-            if (currentItemPage < totalPages) 
-                setCurrentItemPage(currentItemPage + 1)
-        }
-        console.log("PAGINATION PAGE:: " + currentItemPage)
-        switchPage(currentItemPage)
+    function onChangePage(func: (n: number) => number): void {
+        let nextNum: number = func(currentItemPage)
+        setCurrentItemPage(nextNum)
+        console.log("PAGINATION PAGE:: " + nextNum)
+        switchPage(nextNum)
     }
 
     return (
         <>
-            <div>
+            <div className="w-25 p-3">
                 <div className="input-group mb-3">
-                    <button onClick={() => onClickChangePage(false)}
+                    <button onClick={() => onChangePage(x => {
+                        if (x > 0)
+                            return x - 1
+                        else return x
+                    })}
                         className="btn btn-outline-secondary btn-sm" type="button">
                         prev
                     </button>
                     <input type="number"
-                        value={currentItemPage}
+                        value={`${currentItemPage == 0 ? '' : currentItemPage}`}
                         onChange={onItemPageChange}
                         onKeyDown={onItemPageChaneAccepted}
-                        className="form-control" placeholder=""
-                        aria-label="page" aria-describedby="page"
+                        className="form-control"
                     />
-                    <button onClick={() => onClickChangePage(true)}
-                        className="btn btn-sm"
+                    <button onClick={() =>
+                        onChangePage(x => {
+                            if (x < totalPages - 1)
+                                return x + 1
+                            else return x
+                        })}
+                        className="btn btn-outline-secondary btn-sm"
                         type="button">
                         next
+                    </button>
+                    <button disabled className={"btn btn-secondary btn-sm"} >
+                        total
+                        <span className="badge badge-secondary">
+                            {totalPages - 1}
+                        </span>
                     </button>
                 </div>
             </div>
