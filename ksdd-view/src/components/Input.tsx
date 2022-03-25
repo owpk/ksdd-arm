@@ -1,49 +1,29 @@
-import React from "react"
-
-interface Input {
-    getValue(): string
-}
+import React, { FC, useState } from "react"
 
 interface InputProps {
     inputLabel: string
     requestName: string
-    fillSearchQuery: ({ key, value }) => void
+    fltMapRef: Map<string, { key: string, value: string }>
 }
 
-interface InputState {
-    value: string
-}
+export const Input: FC<InputProps> = (props: InputProps) => {
 
-export default class InputComponent
-    extends React.Component<InputProps>
-    implements Input {
+    const [inputVal, setInputValue] = useState<string>('')
 
-    constructor(props: InputProps) {
-        super(props)
+    function inputCallback(e: React.ChangeEvent<HTMLInputElement>) {
+        setInputValue(e.target.value)
+        props.fltMapRef.set(
+            props.requestName, { key: props.requestName, value: inputVal })
     }
 
-    state: InputState = {
-        value: ""
-    }
-
-    inputCallback(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ value: e.target.value })
-    }
-
-    public getValue(): string {
-        return this.state.value
-    }
-
-    render() {
-        return (
-            <>
-                <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text" id="basic-addon1">{this.props.inputLabel}</span>
-                    </div>
-                    <input onChange={this.inputCallback} />
+    return (
+        <>
+            <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">{props.inputLabel}</span>
                 </div>
-            </>
-        )
-    }
+                <input onChange={inputCallback} />
+            </div>
+        </>
+    )
 }
