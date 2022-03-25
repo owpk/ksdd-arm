@@ -30,7 +30,7 @@ public class DemoApplication implements WebMvcConfigurer {
 			@RequestParam Map<String, String> filter) {
 		System.out.println(filter);
 		int limit = to - from;
-		var offsetBasedPageRequest = new OffsetBasedPageRequest(limit, from, "objId");
+		OffsetBasedPageRequest offsetBasedPageRequest = new OffsetBasedPageRequest(limit, from, "objId");
 		Specification<TransformedLog> specification = new SpecResolver(filter).resolve();
 		Page<TransformedLog> result = logRepo.findAll(specification, offsetBasedPageRequest);
 		result.get().forEach(System.out::println);
